@@ -69,9 +69,6 @@ async function main() {
 
   const assets = [];
   for (const file of files.slice(0, 5)) {
-    const filepath = path.join(uploadDir, file);
-    const stats = fs.statSync(filepath);
-
     const asset = await prisma.asset.create({
       data: createMockAsset(file, 1920, 1080),
     });
@@ -162,7 +159,7 @@ async function main() {
     },
   });
   console.log(
-    `Created design: ${design1.title} (${design1.width}x${design1.height}px)`,
+    `Created design: ${design3.title} (${design3.width}x${design3.height}px)`,
   );
 
   console.log('\nSeed completed successfully!');
