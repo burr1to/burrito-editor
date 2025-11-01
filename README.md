@@ -1,49 +1,49 @@
 # SETUP INSTRUCTIONS
 
-# 1. Clone the repo
+1. Clone the repo
 
 git clone https://github.com/yourusername/img-editor.git
 cd img-editor/editor
 
-# 2. Install dependencies
+2. Install dependencies
 
 npm install
 
-# 3. Generate Prisma client
+3. Generate Prisma client
 
 npx prisma generate
 
-# 4. Set up the database (creates tables)
+4. Set up the database (creates tables)
 
 npx prisma db push
 
-# 5. (Optional) Seed with sample data
+5. (Optional) Seed with sample data
 
 npm run db:seed
 
-# 6. Start the development server
+6. Start the development server
 
 npm run dev
 
-# 7: To see DB tables in UI form
+7: To see DB tables in UI form
 
 npx prisma studio
 
 # ARCHITECTURE OVERVIEW
 
-# 1 Frontend
+## 1 Frontend
 
 - Nextjs with App Router
 - TailwindCSS
 - Fabricjs for Image Manipulation
 
-# 2 Backend
+## 2 Backend
 
 - Nextjs API routes (at REST)
 - Prisma ORM (used Postgres locally)
 - File uploads via FormData and fs
 
-# 3 Data Flow
+## 3 Data Flow
 
 - Separated User Actions
 
@@ -57,7 +57,7 @@ npx prisma studio
 
 ![Alt text](./public/readme/flow.png)
 
-# LIBRARIES CHOSEN
+## Libraries
 
 - Nextjs with TS (Easy Routing, Full-Stack, use own API routes, Type Safety)
 - Prisma (Type-safe, easy DB access, ORM)
@@ -66,7 +66,7 @@ npx prisma studio
 - Shadcn (UI components/ templates)
 - Lucide (Ready-to-use icons)
 
-# WHAT WORKS
+## What Works
 
 - Create/Delete/Update Designs (Canvas)
 - Uplaod assets (Images)
@@ -75,7 +75,7 @@ npx prisma studio
 - Export canvas as PNG/JPEG
 - Changes persist to DB
 
-# WHAT MORE
+## What More
 
 - Currently working on a undo-redo feature
 - Image snapping to canvas feature
