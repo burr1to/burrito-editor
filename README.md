@@ -1,4 +1,4 @@
-# Setup
+## Setup
 
 1. **Clone the repo**
 
@@ -19,11 +19,7 @@ Make sure you have PostgreSQL installed and running locally.
 
 Create a database:
 
-```bash
-createdb img_editor_db
-```
-
-Or using `psql`:
+Using `psql`:
 
 ```sql
 CREATE DATABASE img_editor_db;
@@ -45,10 +41,10 @@ DATABASE_URL="postgresql://your_user:your_password@localhost:5432/img_editor_db?
 
 ```bash
 npx prisma generate
-npx prisma db push   # or: npx prisma migrate dev --name init
+npx prisma db push   # if you want to migrate (npx prisma migrate dev --name init)
 ```
 
-6. **(Optional) Seed with sample data**
+6. **Seed with sample data**
 
 ```bash
 npm run db:seed
@@ -66,21 +62,21 @@ npm run dev
 npx prisma studio
 ```
 
-# Architecture Overview
+## Architecture Overview
 
-## Frontend
+### Frontend
 
 - Nextjs with App Router
 - TailwindCSS
 - Fabricjs for Image Manipulation
 
-## Backend
+### Backend
 
 - Nextjs API routes (at REST)
 - Prisma ORM (used Postgres locally)
 - File uploads via FormData and fs
 
-## Data Flow
+### Data Flow
 
 - Separated User Actions
 
