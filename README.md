@@ -4,7 +4,7 @@
 
 git clone https://github.com/yourusername/img-editor.git
 
-cd img-editor/editor
+cd burrito-editor
 
 2. Install dependencies
 
