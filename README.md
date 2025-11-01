@@ -1,8 +1,9 @@
-# SETUP INSTRUCTIONS
+# Setup
 
 1. Clone the repo
 
 git clone https://github.com/yourusername/img-editor.git
+
 cd img-editor/editor
 
 2. Install dependencies
@@ -29,21 +30,21 @@ npm run dev
 
 npx prisma studio
 
-# ARCHITECTURE OVERVIEW
+# Architecture Overview
 
-## 1 Frontend
+## Frontend
 
 - Nextjs with App Router
 - TailwindCSS
 - Fabricjs for Image Manipulation
 
-## 2 Backend
+## Backend
 
 - Nextjs API routes (at REST)
 - Prisma ORM (used Postgres locally)
 - File uploads via FormData and fs
 
-## 3 Data Flow
+## Data Flow
 
 - Separated User Actions
 
