@@ -1,34 +1,70 @@
 # Setup
 
-1. Clone the repo
+1. **Clone the repo**
 
+```bash
 git clone https://github.com/yourusername/img-editor.git
-
 cd burrito-editor
+```
 
-2. Install dependencies
+2. **Install dependencies**
 
+```bash
 npm install
+```
 
-3. Generate Prisma client
+3. **Set up PostgreSQL database**
 
+Make sure you have PostgreSQL installed and running locally.
+
+Create a database:
+
+```bash
+createdb img_editor_db
+```
+
+Or using `psql`:
+
+```sql
+CREATE DATABASE img_editor_db;
+```
+
+4. **Create env file**
+
+```bash
+cp .env.example .env
+```
+
+Then update `.env` with your PostgreSQL credentials:
+
+```bash
+DATABASE_URL="postgresql://your_user:your_password@localhost:5432/img_editor_db?schema=public"
+```
+
+5. **Generate Prisma client and setup DB**
+
+```bash
 npx prisma generate
+npx prisma db push   # or: npx prisma migrate dev --name init
+```
 
-4. Set up the database (creates tables)
+6. **(Optional) Seed with sample data**
 
-npx prisma db push
-
-5. (Optional) Seed with sample data
-
+```bash
 npm run db:seed
+```
 
-6. Start the development server
+7. **Start dev server**
 
+```bash
 npm run dev
+```
 
-7: To see DB tables in UI form
+8. **See DB tables in UI form**
 
+```bash
 npx prisma studio
+```
 
 # Architecture Overview
 
@@ -78,7 +114,8 @@ npx prisma studio
 
 ## What More
 
-- Currently working on a undo-redo feature
+- Dockerize database (Currently working)
+- Undo-redo feature (Currently working)
 - Image snapping to canvas feature
 - Support for other layers (text, shape)
 - Responsiveness, better UI and UX
