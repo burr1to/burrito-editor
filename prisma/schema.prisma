@@ -33,6 +33,7 @@ model Design {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   layers     Layer[]
+  exports    Exports[]
 }
 
 
@@ -62,4 +63,18 @@ model Layer {
   locked    Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+
+model Exports {
+  id      String @id @default(cuid())
+  design  Design @relation(fields: [designId], references: [id], onDelete: Cascade)
+   designId    String
+  filename    String
+  format      String 
+  width       Int
+  height      Int
+  sizeBytes   Int?
+  url         String  
+   createdAt   DateTime @default(now())
 }

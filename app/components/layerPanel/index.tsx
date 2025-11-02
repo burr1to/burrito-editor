@@ -12,7 +12,6 @@ const LayerPanel = ({
   onToggleVisibility,
   onAddLayer,
   uploading,
-  canvasBlank,
   onMoveLayer,
 }: LayerPanelProps) => {
   //why spread? to make shallow copy, not update layers itself
@@ -49,7 +48,7 @@ const LayerPanel = ({
 
       <div className="space-y-2">
         {sorted.map((layer, idx) => {
-          const isDeletable = canvasBlank || layer.zIndex !== 0;
+          const isDeletable = !layer.locked;
           const isLocked = layer.locked;
           const isFirst = idx === sorted.length - 1;
           const isLast = idx === 0;
