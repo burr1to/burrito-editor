@@ -20,7 +20,7 @@ model Asset {
   height        Int?
   sizeBytes    Int?
   url          String
-  sha256       String?   
+  sha256       String @unique   
   createdAt    DateTime @default(now())
   layers      Layer[]
 }

@@ -13,6 +13,7 @@ export const handleExportPNG = (
     'png',
     1.0,
     `${currentDesign.title}.png`,
+    currentDesign,
   );
 };
 
@@ -27,5 +28,6 @@ export const handleExportJPEG = (
     'jpeg',
     0.9,
     `${currentDesign.title}.jpg`,
+    currentDesign,
   );
 };

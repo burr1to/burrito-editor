@@ -4,6 +4,7 @@ import fs from 'fs';
 import { prisma } from '../../../lib/prisma';
 import sharp from 'sharp';
 import { validateFileUpload } from '@/lib/validation';
+import crypto from 'crypto';
 
 const uploadDirectory = path.join(process.cwd(), 'public', 'uploads');
 
@@ -25,6 +26,25 @@ export async function POST(request: NextRequest) {
     const bytes = await validatedFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
+    const hash = crypto.createHash('sha256');
+    hash.update(buffer);
+    const sha256 = hash.digest('hex');
+
+    const existingAsset = await prisma.asset.findUnique({
+      where: { sha256 },
+    });
+
+    if (existingAsset) {
+      return NextResponse.json(
+        {
+          error:
+            'Duplicate file detected. This image has already been uploaded.',
+          existingAsset,
+        },
+        { status: 409 },
+      );
+    }
+
     const filename = `${Date.now()}-${validatedFile.name}`;
     const filepath = path.join(uploadDirectory, filename);
     fs.writeFileSync(filepath, buffer);
@@ -38,6 +58,7 @@ export async function POST(request: NextRequest) {
         height: metadata.height || null,
         sizeBytes: validatedFile.size,
         mimeType: validatedFile.type,
+        sha256: sha256,
       },
     });
 

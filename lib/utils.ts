@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import * as fabric from 'fabric';
-import type { Layer, ExtendedFabricImage } from './types';
+import type { Layer, ExtendedFabricImage, Design } from './types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -114,11 +114,12 @@ export const sortLayersByZIndex = (canvas: fabric.Canvas, layers: Layer[]) => {
   }
 };
 
-export const exportCanvasToImage = (
+export const exportCanvasToImage = async (
   canvas: fabric.Canvas,
   format: 'png' | 'jpeg',
   quality: number,
   filename?: string,
+  currentDesign?: Design | null,
 ) => {
   const maxMultiplier = 4;
   const maxDimension = 8192;
@@ -135,6 +136,22 @@ export const exportCanvasToImage = (
     quality: quality,
     multiplier: Math.min(maxMultiplier, 2),
   });
+
+  const response = await fetch('/api/exports', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      designId: currentDesign?.id,
+      dataUrl: url,
+      format: 'png',
+      width: canvas.width,
+      height: canvas.height,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Export failed');
+  }
 
   const link = document.createElement('a');
   link.download = filename || `design-${Date.now()}`;

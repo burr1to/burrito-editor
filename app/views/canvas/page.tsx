@@ -8,7 +8,8 @@ import Gallery from '@/app/components/gallery';
 import type { Layer, Design, ExtendedFabricImage } from '@/lib/types';
 import { Button } from '@/app/components/ui/button';
 import { createCanvas, sortLayersByZIndex } from '@/lib/utils';
-
+import Image from 'next/image';
+import { Logo } from '@/public';
 import {
   uploadAsset,
   createDesign,
@@ -458,20 +459,25 @@ const CanvasPage = () => {
   const onCancelCrop = () => {
     handleCancelCrop(selectedLayerId, layers, fabricCanvasRef, setCropMode);
   };
+
   return (
-    <div className="flex flex-col gap-y-4">
-      <div className="p-4 border-b mb-4">
-        <h1
-          className="text-2xl font-bold cursor-pointer"
+    <div className="flex flex-col gap-y-4 min-h-screen">
+      <div className="p-2 border-b">
+        <div
+          className=" cursor-pointer p-2 flex gap-x-2 items-center bg-gray-600 rounded-2xl w-[330px] mx-auto"
           onClick={() => {
             setCurrentDesign(null);
+
             setLayers([]);
             setDesignTitle('');
             fetchDesigns();
           }}
         >
-          Burrito Image Editor
-        </h1>
+          <Image src={Logo} width={64} height={64} alt={'logo'} />
+          <h1 className="text-2xl font-bold text-white">
+            Burrito Image Editor
+          </h1>
+        </div>
       </div>
 
       {error && (
@@ -487,33 +493,37 @@ const CanvasPage = () => {
       )}
 
       {!currentDesign ? (
-        <div className="flex flex-col gap-y-4 flex-1 p-4">
-          <Settings
-            designTitle={designTitle}
-            setDesignTitle={setDesignTitle}
-            canvasWidth={canvasWidth}
-            setCanvasWidth={setCanvasWidth}
-            canvasHeight={canvasHeight}
-            setCanvasHeight={setCanvasHeight}
-            uploading={uploading}
-            handleCreateCanvas={handleCreateCanvas}
-          />
+        <div className="flex flex-col gap-y-8 flex-1 p-4 ">
+          <div className="max-w-[1200px] mx-auto">
+            {' '}
+            <Settings
+              designTitle={designTitle}
+              setDesignTitle={setDesignTitle}
+              canvasWidth={canvasWidth}
+              setCanvasWidth={setCanvasWidth}
+              canvasHeight={canvasHeight}
+              setCanvasHeight={setCanvasHeight}
+              uploading={uploading}
+              handleCreateCanvas={handleCreateCanvas}
+            />
+          </div>
+
           <section className="flex flex-col gap-y-5">
             <p className="text-[24px]">Existing Designs</p>
             <div className="flex flex-wrap gap-x-2">
               {allDesigns.map((design, index) => (
                 <div
                   key={index}
-                  className="flex flex-col gap-y-4 py-4 px-7 bg-gray-200 rounded-md cursor-pointer"
+                  className="flex flex-col gap-y-4 py-4 px-7 bg-none border border-gray-200 bg-gray-100/50 rounded-md cursor-pointer"
                 >
-                  <p>Design:{design.title}</p>
-                  <p>
-                    Date of Creation:{' '}
-                    {new Date(design.createdAt!).toLocaleDateString()}
-                  </p>
+                  <div>
+                    <p className="font-bold text-[18px]">{design.title}</p>
+                    <p>{new Date(design.createdAt!).toLocaleDateString()}</p>
+                  </div>
 
                   <div className="flex flex-row gap-x-2">
                     <Button
+                      className="bg-white text-black border border-gray-400 cursor-pointer hover:bg-black hover:text-white"
                       onClick={() => {
                         handleLoadDesign(design.id);
                       }}
@@ -521,6 +531,7 @@ const CanvasPage = () => {
                       Load Design
                     </Button>
                     <Button
+                      className="text-white bg-red-500 cursor-pointer"
                       onClick={() => {
                         handleDeleteDesign(design.id);
                       }}
@@ -535,75 +546,72 @@ const CanvasPage = () => {
         </div>
       ) : (
         <>
-          <div className="flex-1 flex gap-y-4 flex-col items-center justify-center bg-gray-50 p-4 overflow-auto">
-            <section className="flex w-full justify-between items-center">
-              <div className="text-sm text-gray-700 bg-white px-4 py-2 rounded-lg">
-                <strong>Design:</strong> {currentDesign.title} |
-                <strong> Canvas:</strong> {currentDesign.width}x
-                {currentDesign.height}px
-              </div>
+          <div className="px-4 py-2 bg-white border-b flex justify-between items-center">
+            <div className="text-sm text-gray-700">
+              <strong>Design:</strong> {currentDesign.title} |
+              <strong> Canvas:</strong> {currentDesign.width}x
+              {currentDesign.height}px
+            </div>
 
-              <div className="flex gap-2">
-                <Button
-                  onClick={() =>
-                    handleExportPNG(fabricCanvasRef, currentDesign)
-                  }
-                  className="flex items-center gap-2"
-                  disabled={!currentDesign}
-                >
-                  <Download className="w-4 h-4" />
-                  Export PNG
-                </Button>
-                <Button
-                  onClick={() =>
-                    handleExportJPEG(fabricCanvasRef, currentDesign)
-                  }
-                  className="flex items-center gap-2"
-                  disabled={!currentDesign}
-                >
-                  <Download className="w-4 h-4" />
-                  Export JPEG
-                </Button>
-              </div>
-            </section>
-            <div className="flex justify-around items-center gap-4">
+            <div className="flex gap-2">
+              <Button
+                onClick={() => handleExportPNG(fabricCanvasRef, currentDesign)}
+                className="flex items-center gap-2"
+                disabled={!currentDesign}
+              >
+                <Download className="w-4 h-4" />
+                Export PNG
+              </Button>
+              <Button
+                onClick={() => handleExportJPEG(fabricCanvasRef, currentDesign)}
+                className="flex items-center gap-2"
+                disabled={!currentDesign}
+              >
+                <Download className="w-4 h-4" />
+                Export JPEG
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex flex-1 overflow-hidden min-h-0">
+            <div className="flex-1 flex items-center justify-center bg-gray-50 overflow-auto p-4">
               <div className="border-4 border-gray-300 bg-white">
                 <canvas ref={canvasRef} />
               </div>
             </div>
-          </div>
 
-          <div className="bg-white flex justify-between ">
-            <div className="flex-1 w-64 border-l bg-white p-4 overflow-y-auto">
-              <Toolbar
-                selectedLayerId={selectedLayerId}
-                selectedLayer={selectedLayer}
-                onRotate={onRotate}
-                onFlip={onFlip}
-                onScale={onScale}
-                onCrop={onCrop}
-                crop={cropMode}
-              />
-            </div>
+            <div className="w-[450px] flex flex-col bg-white border-l">
+              <div className="p-4 border-b h-[520px]">
+                <h3 className="font-semibold mb-4">Transformations</h3>
+                <Toolbar
+                  selectedLayerId={selectedLayerId}
+                  selectedLayer={selectedLayer}
+                  onRotate={onRotate}
+                  onFlip={onFlip}
+                  onScale={onScale}
+                  onCrop={onCrop}
+                  crop={cropMode}
+                />
 
-            <section className="flex-1 flex flex-col justify-center gap-y-8 items-end px-10">
-              {cropMode && (
-                <section className="flex gap-x-4 i">
-                  <Button
-                    className="border border-gray-200 bg-white text-black "
-                    onClick={onApplyCrop}
-                  >
-                    Apply Crop
-                  </Button>
-                  <Button
-                    className="border border-gray-200 bg-white text-black "
-                    onClick={onCancelCrop}
-                  >
-                    Remove Crop
-                  </Button>
-                </section>
-              )}
-              <section className="flex flex-row gap-4 w-full">
+                {cropMode && (
+                  <div className="flex gap-2 mt-4">
+                    <Button
+                      className="flex-1 border border-gray-200 bg-white text-black"
+                      onClick={onApplyCrop}
+                    >
+                      Apply Crop
+                    </Button>
+                    <Button
+                      className="flex-1 border border-gray-200 bg-white text-black"
+                      onClick={onCancelCrop}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-4 border-b">
                 <LayerPanel
                   layers={layers}
                   selectedLayerId={selectedLayerId}
@@ -615,15 +623,15 @@ const CanvasPage = () => {
                   onMoveLayer={handleMoveLayer}
                   canvasBlank={isBlank}
                 />
-              </section>
+              </div>
+            </div>
+          </div>
 
-              <section className="w-full">
-                <Gallery
-                  onSelectAsset={handleAddAssetFromGallery}
-                  uploading={uploading}
-                />
-              </section>
-            </section>
+          <div className="h-[180px] border-t bg-white overflow-y-auto">
+            <Gallery
+              onSelectAsset={handleAddAssetFromGallery}
+              uploading={uploading}
+            />
           </div>
         </>
       )}

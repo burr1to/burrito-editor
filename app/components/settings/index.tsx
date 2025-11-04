@@ -13,6 +13,7 @@ const Settings = ({
 }: SettingsProps) => {
   return (
     <div className="mb-4  space-y-3">
+      <p>Design Title</p>
       <input
         type="text"
         value={designTitle}
